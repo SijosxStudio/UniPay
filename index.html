@@ -3,21 +3,109 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Send Payment</title>
+  <title>Welcome to My Donation Demo</title>
+  <style>
+    ul.payment-icons {
+      list-style: none;
+      padding-left: 0;
+      display: flex;
+      gap: 16px;
+      margin-top: 20px;
+      margin-bottom: 20px;
+    }
+    ul.payment-icons li {
+      display: inline-block;
+    }
+    ul.payment-icons img {
+      width: 32px;
+      height: 32px;
+      transition: transform 0.2s;
+      cursor: pointer;
+    }
+    ul.payment-icons img:hover {
+      transform: scale(1.2);
+    }
+  </style>
 </head>
 <body style="font-family: sans-serif; padding: 20px;">
 
-  <h2>Send Me a Quick Payment</h2>
-  <p>Choose your preferred payment app below:</p>
+  <h2>Fun fact: You can actually send donos!</h2>
+  <p>If you are GOATed, please choose your preferred app below:</p>
 
-  <ul style="list-style: none; padding-left: 0;">
-    <li><a href="https://cash.app/$mewzzzx?amount=$50&?pay=true!" target="_blank">💵 Cash App</a></li>
-    <li><a href="https://venmo.com/sxdjourney?txn=pay&amount=50&note=Your donation means the 🌎!" target="_blank">📱 Venmo</a></li>
-    <li><a href="https://www.paypal.com/ncp/payment/JKAE5EMA7HM8C" target="_blank">💳 PayPal Tip Jar</a></li>
-    <li><a href="https://cash.app/launch/bitcoin/$mewzzzx/SORJVd6YCn" target="_blank">🏦 BTC via CashApp</a></li>
+  <ul class="payment-icons">
+    <!-- Cash App -->
+    <li>
+      <a href="#" onclick="redirectTo('cashapp')" title="Pay with Cash App">
+        <img src="https://www.google.com/s2/favicons?domain=cash.app" alt="Cash App">
+      </a>
+    </li>
+
+    <!-- Venmo -->
+    <li>
+      <a href="#" onclick="redirectTo('venmo')" title="Pay with Venmo">
+        <img src="https://www.google.com/s2/favicons?domain=venmo.com" alt="Venmo">
+      </a>
+    </li>
+
+    <!-- PayPal -->
+    <li>
+      <a href="#" onclick="redirectTo('paypal')" title="Pay with PayPal">
+        <img src="https://www.google.com/s2/favicons?domain=paypal.com" alt="PayPal">
+      </a>
+    </li>
+
+    <!-- BTC via Cash App -->
+    <li>
+      <a href="https://cash.app/launch/bitcoin/$mewzzzx/SORJVd6YCn" title="Donate BTC via Cash App" target="_blank">
+        <img src="https://www.google.com/s2/favicons?domain=cash.app" alt="Cash App BTC">
+      </a>
+    </li>
   </ul>
 
-  <p>All payments are secure and require the specific app to be pre-downloaded.</p>
+  <p>All payments are secure and every donation supports my family.</p>
+
+  <script>
+    function isIOS() {
+      return /iPhone|iPad|iPod/i.test(navigator.userAgent);
+    }
+
+    function isAndroid() {
+      return /Android/i.test(navigator.userAgent);
+    }
+
+    function redirectTo(app) {
+      let url = "";
+
+      switch(app) {
+        case 'venmo':
+          url = isIOS() 
+            ? "venmo://paycharge?txn=pay&recipients=sxdjourney&note=Your%20donation%20means%20the%20🌎" 
+            : isAndroid() 
+              ? "intent://venmo.com/sxdjourney?txn=pay&note=Your%20donation%20means%20the%20🌎#Intent;scheme=https;package=com.venmo;end" 
+              : "https://venmo.com/sxdjourney?txn=pay&note=Your donation means the 🌎!";
+          break;
+
+        case 'paypal':
+          url = isIOS() || isAndroid()
+            ? "paypal://send?recipient=JKAE5EMA7HM8C"
+            : "https://www.paypal.com/ncp/payment/JKAE5EMA7HM8C";
+          break;
+
+        case 'cashapp':
+          url = isIOS()
+            ? "cashapp://send?note=Thank You 🖤"
+            : isAndroid()
+              ? "intent://cash.app/$mewzzzx#Intent;scheme=https;package=com.squareup.cash;end"
+              : "https://cash.app/$mewzzzx";
+          break;
+
+        default:
+          url = "#";
+      }
+
+      window.location.href = url;
+    }
+  </script>
 
 </body>
 </html>
